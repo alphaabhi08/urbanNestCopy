@@ -36,7 +36,7 @@ class HomeProductsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val database = FirebaseDb()
+        FirebaseDb()
         viewModel = (activity as ShoppingActivity).viewModel
         headerAdapter = AdsRecyclerAdapter()
         bestDealsAdapter = BestDealsRecyclerAdapter()
@@ -210,7 +210,7 @@ class HomeProductsFragment : Fragment() {
     private fun productsPaging() {
         binding.scrollChair.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
 
-            if (v!!.getChildAt(0).bottom <= (v.height + scrollY)) {
+            if (v.getChildAt(0).bottom <= (v.height + scrollY)) {
                 viewModel.getHomeProduct(productsAdapter.differ.currentList.size)
             }
         })
