@@ -17,7 +17,7 @@ import java.util.*
 private const val TAG = "ShoppingViewModel"
 
 class ShoppingViewModel(
-//    private val firebaseDatabase: FirebaseDb
+    private val firebaseDatabase: FirebaseDb
 ) : ViewModel() {
 
     val clothes = MutableLiveData<List<Product>>()
@@ -348,6 +348,7 @@ class ShoppingViewModel(
 
         }
 
+
     fun getBestDealsProduct() =
         firebaseDatabase.getBestDealsProducts(bestDealsPaging).addOnCompleteListener {
             if (it.isSuccessful) {
@@ -451,17 +452,37 @@ class ShoppingViewModel(
     * TODO : Move these functions to firebaseDatabase class
      */
 
+//    private fun shouldPaging(category: String, listSize: Int, onSuccess: (Boolean) -> Unit) {
+//        FirebaseFirestore.getInstance()
+//            .collection("Products")
+//            .whereEqualTo("category", "Best Deals").get().addOnSuccessListener {it->
+//                val tempCategory = it.toObjects(Category::class.java)
+//                val products = tempCategory[0].products
+//                Log.d("test", " $category : products ${tempCategory[0].products}, size $listSize")
+//                if (listSize == products)
+//                    onSuccess(false).also { Log.d(TAG, "$category Paging:true") }
+//                else
+//                    onSuccess(true).also { Log.d(TAG, "$category Paging:true") }
+//            }
+//    }
+
+
     private fun shouldPaging(category: String, listSize: Int, onSuccess: (Boolean) -> Unit) {
         FirebaseFirestore.getInstance()
             .collection("categories")
-            .whereEqualTo("name", category).get().addOnSuccessListener {
+            .whereEqualTo("name", category).get().addOnSuccessListener {it->
                 val tempCategory = it.toObjects(Category::class.java)
-                val products = tempCategory[0].products
-                Log.d("test", " $category : prodcuts ${tempCategory[0].products}, size $listSize")
-                if (listSize == products)
-                    onSuccess(false).also { Log.d(TAG, "$category Paging:false") }
-                else
-                    onSuccess(true).also { Log.d(TAG, "$category Paging:true") }
+                Log.w("CUSTOM RESPONSE", tempCategory.toString())
+                if(tempCategory.size != 0) {
+                    val products = tempCategory[0].products
+                    Log.d("test", " $category : products ${tempCategory[0].products}, size $listSize")
+                    if (listSize == products)
+                        onSuccess(true).also { Log.d(TAG, "$category Paging:true") }
+                    else
+                        onSuccess(true).also { Log.d(TAG, "$category Paging:true") }
+
+
+                }
             }
     }
 
@@ -474,7 +495,7 @@ class ShoppingViewModel(
                 }
 
                 if (listSize == productsCount)
-                    onSuccess(false)
+                    onSuccess(true)  //Changes*
                 else
                     onSuccess(true)
 
@@ -689,8 +710,6 @@ class ShoppingViewModel(
             } else
                 categories.postValue(Resource.Error(it.exception.toString()))
         }
-
-
     }
 
 }

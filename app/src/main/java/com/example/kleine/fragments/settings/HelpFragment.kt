@@ -33,7 +33,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     }
 
     private fun openCallApp() {
-        val callIntent: Intent = Uri.parse("tel:123123123123").let { number ->
+        val callIntent: Intent = Uri.parse("tel:8488006438").let { number ->
             Intent(Intent.ACTION_DIAL, number)
         }.also { startActivity(it) }
     }
@@ -41,7 +41,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
     private fun openEmailApp() {
         Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("kleine@gmail.com")) // recipients
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("UrbanNest@gmail.com")) // recipients
             putExtra(Intent.EXTRA_SUBJECT, "")
             putExtra(Intent.EXTRA_TEXT, "")
             putExtra(Intent.EXTRA_STREAM, Uri.parse("content://path/to/email/attachment"))
